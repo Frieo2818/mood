@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Flower Just For You 🌸</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #87ceeb, #98fb98, #f0e68c, #dda0dd);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            opacity: 0.7;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .intro-text {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .flower-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto 3rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .flower-container:hover {
+            transform: scale(1.05);
+        }
+
+        .flower {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Improved flower design */
+        .petal {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            border-radius: 50% 20% 50% 20%;
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #dc143c 100%);
+            transform-origin: 50% 85%;
+            box-shadow: 
+                inset -5px -5px 15px rgba(0,0,0,0.1),
+                0 5px 15px rgba(255, 105, 180, 0.4);
+            opacity: 0;
+            animation: petalBloom 0.8s ease-out forwards;
+        }
+
+        /* Position petals in a perfect circle */
+        .petal:nth-child(1) { 
+            transform: rotate(0deg) translateY(-90px); 
+            animation-delay: 1s; 
+        }
+        .petal:nth-child(2) { 
+            transform: rotate(45deg) translateY(-90px); 
+            animation-delay: 1.2s; 
+        }
+        .petal:nth-child(3) { 
+            transform: rotate(90deg) translateY(-90px); 
+            animation-delay: 1.4s; 
+        }
+        .petal:nth-child(4) { 
+            transform: rotate(135deg) translateY(-90px); 
+            animation-delay: 1.6s; 
+        }
+        .petal:nth-child(5) { 
+            transform: rotate(180deg) translateY(-90px); 
+            animation-delay: 1.8s; 
+        }
+        .petal:nth-child(6) { 
+            transform: rotate(225deg) translateY(-90px); 
+            animation-delay: 2s; 
+        }
+        .petal:nth-child(7) { 
+            transform: rotate(270deg) translateY(-90px); 
+            animation-delay: 2.2s; 
+        }
+        .petal:nth-child(8) { 
+            transform: rotate(315deg) translateY(-90px); 
+            animation-delay: 2.4s; 
+        }
+
+        @keyframes petalBloom {
+            0% {
+                opacity: 0;
+                transform: rotate(var(--rotation)) translateY(-90px) scale(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: rotate(var(--rotation)) translateY(-90px) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: rotate(var(--rotation)) translateY(-90px) scale(1);
+            }
+        }
+
+        .flower-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #ffd700 20%, #ffb347 70%, #ff8c00 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: centerBloom 1s ease-out 2.8s forwards;
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.6),
+                inset -5px -5px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .flower-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ffff99, #ffd700);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes centerBloom {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 12px;
+            height: 120px;
+            background: linear-gradient(to right, #228b22 0%, #32cd32 50%, #228b22 100%);
+            border-radius: 6px;
+            transform: translateX(-50%) scaleY(0);
+            transform-origin: bottom;
+            animation: stemGrow 1.5s ease-out 0.5s forwards;
+            box-shadow: inset -2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        @keyframes stemGrow {
+            0% {
+                transform: translateX(-50%) scaleY(0);
+            }
+            100% {
+                transform: translateX(-50%) scaleY(1);
+            }
+        }
+
+        /* Leaves */
+        .leaf {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background: linear-gradient(45deg, #228b22, #32cd32);
+            border-radius: 0 100% 0 100%;
+            bottom: 40px;
+            transform-origin: right center;
+            opacity: 0;
+            animation: leafGrow 0.8s ease-out forwards;
+        }
+
+        .leaf:nth-child(1) {
+            left: 45%;
+            transform: translateX(-50%) rotate(-30deg) scale(0);
+            animation-delay: 2.5s;
+        }
+
+        .leaf:nth-child(2) {
+            right: 45%;
+            transform: translateX(50%) rotate(30deg) scale(0);
+            animation-delay: 2.7s;
+        }
+
+        @keyframes leafGrow {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--translate, 0)) rotate(var(--rotate, 0)) scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(var(--translate, 0)) rotate(var(--rotate, 0)) scale(1);
+            }
+        }
+
+        .click-prompt {
+            color: white;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: promptFade 1s ease-out 3.5s forwards, pulse 2s ease-in-out 5.5s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        @keyframes promptFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Messages revolving around flower */
+        .messages-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .messages-container.active {
+            opacity: 1;
+            pointer-events: all;
+            animation: revolve 20s linear infinite;
+        }
+
+        @keyframes revolve {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .message-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 15px;
+            width: 180px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 182, 193, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: messageAppear 0.8s ease-out forwards;
+            font-size: 0.85rem;
+        }
+
+        .message-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            z-index: 20;
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .message-bubble h3 {
+            color: #ff1493;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .message-bubble p {
+            color: #333;
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        /* Position messages in a circle around the flower */
+        .message-bubble:nth-child(1) {
+            top: -90px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 0.5s;
+        }
+
+        .message-bubble:nth-child(2) {
+            top: -65px;
+            right: -65px;
+            animation-delay: 0.7s;
+        }
+
+        .message-bubble:nth-child(3) {
+            top: 50%;
+            right: -90px;
+            transform: translateY(-50%);
+            animation-delay: 0.9s;
+        }
+
+        .message-bubble:nth-child(4) {
+            bottom: -65px;
+            right: -65px;
+            animation-delay: 1.1s;
+        }
+
+        .message-bubble:nth-child(5) {
+            bottom: -90px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 1.3s;
+        }
+
+        .message-bubble:nth-child(6) {
+            bottom: -65px;
+            left: -65px;
+            animation-delay: 1.5s;
+        }
+
+        .message-bubble:nth-child(7) {
+            top: 50%;
+            left: -90px;
+            transform: translateY(-50%);
+            animation-delay: 1.7s;
+        }
+
+        .message-bubble:nth-child(8) {
+            top: -65px;
+            left: -65px;
+            animation-delay: 1.9s;
+        }
+
+        .selected-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 182, 193, 0.8);
+            z-index: 100;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .selected-message.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .selected-message h2 {
+            color: #ff1493;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .selected-message p {
+            color: #333;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .flower-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .messages-container {
+                width: 400px;
+                height: 400px;
+            }
+            
+            .message-bubble {
+                width: 140px;
+                padding: 0.8rem;
+                font-size: 0.7rem;
+            }
+            
+            .selected-message {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .intro-text {
+                font-size: 1.3rem;
+                padding: 0 1rem;
+            }
+        }
+
+        @keyframes sparkleEffect {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="container">
+        <h1 class="intro-text">Something beautiful is growing for you... 🌸</h1>
+        
+        <div class="flower-container" id="flowerContainer">
+            <div class="flower">
+                <div class="stem">
+                    <div class="leaf" style="--translate: -50%; --rotate: -30deg;"></div>
+                    <div class="leaf" style="--translate: 50%; --rotate: 30deg;"></div>
+                </div>
+                <div class="petal" style="--rotation: 0deg;"></div>
+                <div class="petal" style="--rotation: 45deg;"></div>
+                <div class="petal" style="--rotation: 90deg;"></div>
+                <div class="petal" style="--rotation: 135deg;"></div>
+                <div class="petal" style="--rotation: 180deg;"></div>
+                <div class="petal" style="--rotation: 225deg;"></div>
+                <div class="petal" style="--rotation: 270deg;"></div>
+                <div class="petal" style="--rotation: 315deg;"></div>
+                <div class="flower-center"></div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="message-bubble" data-type="love">
+                    <h3>💖 Love Note</h3>
+                    <p>A message from my heart...</p>
+                </div>
+                <div class="message-bubble" data-type="encouragement">
+                    <h3>🌟 Encouragement</h3>
+                    <p>You're stronger than you know...</p>
+                </div>
+                <div class="message-bubble" data-type="memory">
+                    <h3>💭 Sweet Memory</h3>
+                    <p>A cherished moment...</p>
+                </div>
+                <div class="message-bubble" data-type="future">
+                    <h3>🌈 Future Dreams</h3>
+                    <p>What I dream for us...</p>
+                </div>
+                <div class="message-bubble" data-type="gratitude">
+                    <h3>🙏 Gratitude</h3>
+                    <p>What I'm thankful for...</p>
+                </div>
+                <div class="message-bubble" data-type="strength">
+                    <h3>💪 Your Strength</h3>
+                    <p>How amazing you are...</p>
+                </div>
+                <div class="message-bubble" data-type="promise">
+                    <h3>🤝 Promise</h3>
+                    <p>My commitment to you...</p>
+                </div>
+                <div class="message-bubble" data-type="beauty">
+                    <h3>🌺 Your Beauty</h3>
+                    <p>You're absolutely radiant...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="click-prompt" id="clickPrompt">
+            Click the flower to receive your messages of love 💕
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="selected-message" id="selectedMessage">
+        <h2 id="messageTitle"></h2>
+        <p id="messageContent"></p>
+        <button class="close-btn" onclick="closeMessage()">Close with Love 💕</button>
+    </div>
+
+    <script>
+        // Enhanced message collections
+        const messages = {
+            love: [
+                "You are the most beautiful soul I've ever known. Even when you can't see it yourself, I see your light shining so bright it takes my breath away. My love for you is infinite and unconditional. 💖",
+                "In a world of billions, you are my one. Your heart, your mind, your beautiful spirit - everything about you is perfect to me. I love you more than words could ever express. 🌹",
+                "Distance may separate our bodies, but nothing can separate our hearts. You carry mine with you always, and I carry yours. We are connected by love that transcends space and time. 💕",
+                "Every day I fall in love with you all over again. Your kindness, your strength, your laugh, the way you see the world - you are my everything, my forever. ❤️",
+                "You are my safe place, my home, my greatest adventure all at once. Thank you for being exactly who you are. I love you endlessly. 🏠💝"
+            ],
+            encouragement: [
+                "You are so much stronger than you realize. Every challenge you've faced has only made you more resilient, more beautiful. This difficult time is just a chapter, not your whole story. 🌟",
+                "It's okay to not be okay sometimes. Your feelings are valid, and taking time for yourself shows wisdom, not weakness. I'm here whenever you're ready. 🤗",
+                "You've weathered storms before and emerged even more radiant. This too shall pass, and when it does, you'll shine brighter than ever. I believe in you completely. 🌈",
+                "Your gentle heart and fierce spirit inspire me every day. Don't let anyone, including yourself, dim that incredible light you carry within. You are enough, just as you are. ✨",
+                "Tomorrow is a blank canvas waiting for your beautiful colors. Rest today, heal today, and know that brighter days are coming. You deserve all the happiness in the world. 🎨"
+            ],
+            memory: [
+                "I love how your eyes crinkle when you laugh really hard. That genuine, pure joy you radiate in those moments - it's one of my favorite things in the entire universe. 😊",
+                "Remember that time you got so excited talking about something you loved? Your passion lit up the whole room. That's the energy I fell in love with. 🔥",
+                "The way you hum when you're content, usually without even realizing it - those little moments of unconscious happiness mean everything to me. 🎵",
+                "I cherish every sleepy good morning text, every silly photo you send, every random thought you share with me. These are the treasures of my heart. 📱💕",
+                "Your voice saying my name is my favorite sound. The way you care for others, even when you're struggling, shows the beautiful heart you have. 💖"
+            ],
+            future: [
+                "I dream of the day I can hold you again, when distance is just a memory and we're building our life together. That day will come, and it will be magical. 🏰",
+                "I imagine all the adventures we'll have, the quiet mornings, the inside jokes, the way we'll support each other through everything life brings. Our future is so bright. ☀️",
+                "One day we'll look back on this time apart and be so proud of how our love stayed strong. We're building something unbreakable here. 💎",
+                "I can't wait to create new memories with you, to explore the world together, to build a home filled with laughter and love. You're my forever person. 🏡",
+                "Every day we're apart is one day closer to our always. I'm counting down until I can wake up next to you every morning. Soon, my love. 📅❤️"
+            ],
+            gratitude: [
+                "Thank you for loving me exactly as I am, flaws and all. Your acceptance has taught me what unconditional love really means. You are a gift. 🎁",
+                "I'm grateful for your patience, your understanding, and the way you see the best in everyone. You make me want to be a better person every day. 🌱",
+                "Thank you for sharing your heart with me, for trusting me with your dreams and fears. Being loved by you is the greatest honor of my life. 🙏",
+                "I'm thankful for every message, every call, every moment you choose to include me in your world. You make ordinary days feel extraordinary. ✨",
+                "Your love has been my anchor in stormy weather and my wings when I need to soar. Thank you for being my everything, my person, my home. ⚓️🕊️"
+            ],
+            strength: [
+                "You handle challenges with such grace and wisdom. Even when you feel weak, I see nothing but strength and beauty in how you face each day. 💪",
+                "Your compassion for others, even during your own difficult times, shows what an incredible person you are. Your heart is made of pure gold. 💛",
+                "The way you keep going, keep trying, keep loving despite everything - that's not just strength, that's heroism. You're my hero. 🦸‍♀️",
+                "You've turned your wounds into wisdom and your pain into purpose. Watching you grow and heal has been an honor. You're unstoppable. 🌱",
+                "Your quiet strength inspires me every day. You may not feel powerful, but you're the strongest person I know. Never doubt your incredible spirit. 🔥"
+            ],
+            promise: [
+                "I promise to love you through every season of life - through storms and sunshine, laughter and tears. My heart is yours, always and forever. 🌈",
+                "I promise to be your biggest cheerleader, your safe space, and your adventure partner. Together, we can weather anything life brings. 💪💕",
+                "I promise to see you - really see you - even when you feel invisible. You matter to me more than you'll ever know. 👁️💖",
+                "I promise to grow alongside you, to support your dreams, and to never stop believing in the incredible person you are becoming. 🌱✨",
+                "I promise that no matter how far apart we are, you'll always have a home in my heart. This love is forever. 🏡❤️"
+            ],
+            beauty: [
+                "Your beauty isn't just in how you look - though you absolutely take my breath away - it's in how you move through the world with such kindness. 🌸",
+                "The way you light up when you talk about something you're passionate about - that's the most beautiful thing I've ever seen. Pure radiance. ✨",
+                "Your smile could power entire cities. When you're truly happy, the whole world seems brighter. You are sunshine personified. ☀️😊",
+                "Beautiful is too small a word for you. You're magnificent, stunning, extraordinary - inside and out. You're a living work of art. 🎨💖",
+                "Even your flaws are beautiful to me because they make you uniquely, perfectly you. Every freckle, every scar, every insecurity - all beautiful. 💫"
+            ]
+        };
+
+        let isFlowerClicked = false;
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const particleTypes = ['🌸', '🦋', '✨', '💕', '🌺', '💖', '🌷'];
+            particle.innerHTML = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            document.getElementById('particles').appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Start particle animation
+        setInterval(createParticle, 1200);
+
+        // Flower click handler
+        document.getElementById('flowerContainer').addEventListener('click', function() {
+            if (!isFlowerClicked) {
+                isFlowerClicked = true;
+                document.getElementById('messagesContainer').classList.add('active');
+                document.getElementById('clickPrompt').style.opacity = '0';
+                
+                // Create massive sparkle explosion
+                const rect = this.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        createSparkle(centerX, centerY);
+                    }, i * 50);
+                }
+
+                // Add extra floating hearts
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createFloatingHeart();
+                    }, i * 200);
+                }
+            }
+        });
+
+        // Message bubble click handlers
+        document.querySelectorAll('.message-bubble').forEach(bubble => {
+            bubble.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                const messageList = messages[type];
+                const randomMessage = messageList[Math.floor(Math.random() * messageList.length)];
+                
+                document.getElementById('messageTitle').textContent = this.querySelector('h3').textContent;
+                document.getElementById('messageContent').textContent = randomMessage;
+                document.getElementById('overlay').classList.add('show');
+                document.getElementById('selectedMessage').classList.add('show');
+                
+                // Create sparkles around the clicked bubble
+                const rect = this.getBoundingClientRect();
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        createSparkle(
+                            rect.left + rect.width / 2,
+                            rect.top + rect.height / 2
+                        );
+                    }, i * 30);
+                }
+            });
+        });
+
+        // Close message function
+        function closeMessage() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('selectedMessage').classList.remove('show');
+        }
+
+        // Close on overlay click
+        document.getElementById('overlay').addEventListener('click', closeMessage);
+
+        // Create sparkle effect
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = (x + (Math.random() - 0.5) * 150) + 'px';
+            sparkle.style.top = (y + (Math.random() - 0.5) * 150) + 'px';
+            sparkle.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '200';
+            const sparkleTypes = ['✨', '⭐', '💫', '🌟', '✨'];
+            sparkle.innerHTML = sparkleTypes[Math.floor(Math.random() * sparkleTypes.length)];
+            sparkle.style.animation = 'sparkleEffect 1.5s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1500);
+        }
+
+        // Create floating heart effect
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.style.position = 'fixed';
+            heart.style.left = (window.innerWidth * Math.random()) + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '200';
+            heart.innerHTML = '💕';
+            heart.style.animation = 'floatUp 4s ease-out forwards';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Add additional CSS animations
+        const additionalStyles = document.createElement('style');
+        additionalStyles.textContent = `
+            @keyframes floatUp {
+                0% {
+                    opacity: 0.8;
+                    transform: translateY(0) rotate(0deg) scale(0.5);
+                }
+                50% {
+                    opacity: 1;
+                    transform: translateY(-200px) rotate(180deg) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-400px) rotate(360deg) scale(0.5);
+                }
+            }
+        `;
+        document.head.appendChild(additionalStyles);
+
+        // Keyboard shortcuts for extra romance
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                if (!isFlowerClicked) {
+                    document.getElementById('flowerContainer').click();
+                }
+            }
+        });
+
+        // Double-click for extra sparkles
+        document.getElementById('flowerContainer').addEventListener('dblclick', function() {
+            if (isFlowerClicked) {
+                const rect = this.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        createSparkle(centerX, centerY);
+                    }, i * 20);
+                }
+            }
+        });
+
+        // Initial setup - make intro even more romantic
+        setTimeout(() => {
+            if (!isFlowerClicked) {
+                const introText = document.querySelector('.intro-text');
+                introText.innerHTML = "Your flower is ready to bloom with love... 🌸💕";
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
